@@ -1,5 +1,4 @@
 import path from 'path';
-import { inspect } from 'util';
 
 import jestOpenAPI from '..';
 
