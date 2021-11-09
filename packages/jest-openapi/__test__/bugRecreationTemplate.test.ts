@@ -3,13 +3,14 @@ import { inspect } from 'util';
 
 import jestOpenAPI from '..';
 
-const dirContainingApiSpec = path.resolve(
-  '../../commonTestResources/exampleOpenApiFiles/valid/bugRecreationTemplate',
-);
+const dirContainingApiSpec = path.resolve('./__test__');
 
-describe('Recreate bug (issue #XX)', () => {
+describe('Recreate bug (issue #257)', () => {
   beforeAll(() => {
-    const pathToApiSpec = path.join(dirContainingApiSpec, 'openapi.yml');
+    const pathToApiSpec = path.join(
+      dirContainingApiSpec,
+      'oneOfArrayIssue.yml',
+    );
     jestOpenAPI(pathToApiSpec);
   });
 
@@ -20,22 +21,20 @@ describe('Recreate bug (issue #XX)', () => {
       path: '/recreate/bug',
     },
     body: {
-      expectedProperty1: 'foo',
+      included: [
+        { type: 'Apple', attributes: { rating: 5 } },
+        { type: 'AppleOrange', attributes: { isTasty: true } },
+        { type: 'Banana', attributes: { description: 'Yellow and sumptuous' } },
+        { type: 'AppleOrange', attributes: { isTasty: false } },
+        {
+          type: 'Banana',
+          attributes: { description: 'Another thing about a banana' },
+        },
+      ],
     },
   };
 
   it('passes', () => {
     expect(res).toSatisfyApiSpec();
-  });
-
-  it('fails when using .not', () => {
-    const assertion = () => expect(res).not.toSatisfyApiSpec();
-    expect(assertion).toThrow(
-      inspect({
-        body: {
-          expectedProperty1: 'foo',
-        },
-      }),
-    );
   });
 });

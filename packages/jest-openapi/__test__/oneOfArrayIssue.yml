@@ -1,0 +1,96 @@
+openapi: 3.0.3
+info:
+  title: Example OpenApi 3 spec
+  description: Use to recreate a bug
+  version: 0.1.0
+paths:
+  /recreate/bug:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                readOnly: true
+                required:
+                  - included
+                properties:
+                  included:
+                    $ref: '#/components/schemas/Included'
+components:
+  schemas:
+    Included:
+      type: array
+      uniqueItems: true
+      readOnly: true
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/Apple'
+          - $ref: '#/components/schemas/AppleOrange'
+          - $ref: '#/components/schemas/Banana'
+    Apple:
+      type: object
+      additionalProperties: false
+      readOnly: true
+      required:
+        - type
+        - attributes
+      properties:
+        type:
+          type: string
+          enum:
+            - Apple
+        attributes:
+          type: object
+          additionalProperties: false
+          readOnly: true
+          required:
+            - rating
+          properties:
+            rating:
+              type: number
+    AppleOrange:
+      type: object
+      additionalProperties: false
+      readOnly: true
+      required:
+        - type
+        - attributes
+      properties:
+        type:
+          type: string
+          enum:
+            - Orange
+        attributes:
+          type: object
+          additionalProperties: false
+          readOnly: true
+          required:
+            - isTasty
+          properties:
+            isTasty:
+              type: boolean
+    Banana:
+      type: object
+      additionalProperties: false
+      readOnly: true
+      required:
+        - type
+        - attributes
+      properties:
+        type:
+          type: string
+          enum:
+            - Banana
+        attributes:
+          type: object
+          additionalProperties: false
+          readOnly: true
+          required:
+            - description
+          properties:
+            description:
+              type: string
